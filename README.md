@@ -35,10 +35,10 @@ server/
 └── package.json
 ```
 
-## New Features
+## Features
 
-### 1. Security Improvements
-- **Origin Validation**: Only allows requests from trusted origins (TurboWarp, PenguinMod, localhost)
+### 1. Security
+- **Origin Validation**: Only allows requests from trusted origins (TurboWarp, PenguinMod, localhost) (Not actually sure if it works right now)
 - **Rate Limiting**: Prevents abuse with configurable rate limits
 - **Project Blocking**: Ability to block specific projects from using OAuth
 - **Admin Authentication**: Secure admin panel with key-based authentication
@@ -111,7 +111,7 @@ npm install
 # or
 bun install
 
-# Start with the new organized server
+# Start the server
 node server.js
 # or
 bun run server.js
@@ -130,14 +130,6 @@ Projects can be blocked in two ways:
 - Origins are validated against a whitelist
 - Rate limiting is applied to prevent abuse
 - Admin endpoints require the `ADMIN_KEY` environment variable
-
-## Migration from Old Server
-
-1. Copy your `.env` file
-2. Add the new `ADMIN_KEY` variable
-3. Update your startup script to use `server-new.js`
-4. Test all OAuth flows
-5. Configure admin access
 
 ## Development
 
