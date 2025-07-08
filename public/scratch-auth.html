@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scratch Authentication - AuthPenguin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        body { background: linear-gradient(135deg, #1f2937 0%, #111827 100%); }
+        .step-indicator { transition: all 0.3s ease; }
+        .step-active { transform: scale(1.1); }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-6 bg-gray-900">
+    <div class="w-full max-w-md">
+        <div class="text-center mb-8">
+            <div class="flex items-center justify-center mb-4">
+                <img src="/public/icons/scratch.svg" class="w-8 h-8 mr-3" alt="Scratch">
+                <h1 class="text-3xl font-bold text-white">Scratch Authentication</h1>
+            </div>
+            <p class="text-gray-400">Verify your Scratch account with AuthPenguin</p>
+        </div>
+
+        <div class="flex justify-center mb-8">
+            <div class="flex items-center space-x-4">
+                <div id="step1-indicator" class="step-indicator step-active w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center text-white text-sm font-bold">1</div>
+                <div class="w-8 h-1 bg-gray-600" id="connector1"></div>
+                <div id="step2-indicator" class="step-indicator w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-white text-sm font-bold">2</div>
+                <div class="w-8 h-1 bg-gray-600" id="connector2"></div>
+                <div id="step3-indicator" class="step-indicator w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-white text-sm font-bold">3</div>
+            </div>
+        </div>
+
+        <div id="step1" class="bg-gray-800 rounded-xl p-6 shadow-xl">
+            <h2 class="text-xl font-semibold text-white mb-4">Step 1: Enter Your Username</h2>
+            <p class="text-gray-300 mb-4">Enter your Scratch username to start the verification process.</p>
+            
+            <div class="mb-4">
+                <label for="usernameInput" class="block text-gray-300 text-sm font-medium mb-2">Scratch Username</label>
+                <input type="text" id="usernameInput" placeholder="Enter your Scratch username" 
+                       class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500">
+            </div>
+
+            <div id="step1Error" class="hidden bg-red-900/30 border border-red-500/50 rounded-lg p-3 mb-4">
+                <div class="flex items-center">
+                    <i class="bi bi-exclamation-triangle text-red-400 mr-2"></i>
+                    <span id="step1ErrorText" class="text-red-200 text-sm"></span>
+                </div>
+            </div>
+
+            <button id="getCodeBtn" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105">
+                <i class="bi bi-arrow-right mr-2"></i>Get Verification Code
+            </button>
+        </div>
+
+        <div id="step2" class="bg-gray-800 rounded-xl p-6 shadow-xl hidden">
+            <h2 class="text-xl font-semibold text-white mb-4">Step 2: Your Verification Code</h2>
+            <p class="text-gray-300 mb-4">Here's your unique verification code. Copy it to use in the next step:</p>
+            
+            <div class="bg-gray-700 rounded-lg p-4 mb-6">
+                <div class="flex items-center justify-between">
+                    <code id="verificationCode" class="text-orange-400 font-mono text-lg"></code>
+                    <button id="copyBtn" class="bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 rounded text-sm transition-colors">
+                        <i class="bi bi-clipboard"></i> Copy
+                    </button>
+                </div>
+            </div>
+
+            <button id="nextToCommentBtn" class="w-full bg-green-600 hover:bg-green-500 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200">
+                Next: Comment Code <i class="bi bi-arrow-right ml-2"></i>
+            </button>
+        </div>
+
+        <div id="step3" class="bg-gray-800 rounded-xl p-6 shadow-xl hidden">
+            <h2 class="text-xl font-semibold text-white mb-4">Step 3: Comment & Verify</h2>
+            <p class="text-gray-300 mb-4">Post the verification code as a comment on your Scratch profile, then verify:</p>
+            
+            <div class="bg-gray-700 rounded-lg p-4 mb-4">
+                <div class="text-gray-300 text-sm mb-2">Your code:</div>
+                <code id="displayCode" class="text-orange-400 font-mono"></code>
+            </div>
+
+            <div class="bg-blue-900/30 border border-blue-500/50 rounded-lg p-4 mb-6">
+                <div class="flex items-start">
+                    <i class="bi bi-info-circle text-blue-400 mr-2 mt-0.5"></i>
+                    <div class="text-blue-200 text-sm">
+                        <p class="font-semibold mb-1">Instructions:</p>
+                        <ol class="list-decimal list-inside space-y-1">
+                            <li>Go to your Scratch profile page</li>
+                            <li>Scroll to the comments section</li>
+                            <li>Post the code above as a comment</li>
+                            <li>Click "Verify" below</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div id="step3Error" class="hidden bg-red-900/30 border border-red-500/50 rounded-lg p-3 mb-4">
+                <div class="flex items-center">
+                    <i class="bi bi-exclamation-triangle text-red-400 mr-2"></i>
+                    <span id="step3ErrorText" class="text-red-200 text-sm"></span>
+                </div>
+            </div>
+
+            <div class="flex space-x-3">
+                <a href="#" id="scratchProfileLink" target="_blank" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 text-center">
+                    <i class="bi bi-box-arrow-up-right mr-2"></i>Open Profile
+                </a>
+                <button id="verifyBtn" class="flex-1 bg-orange-600 hover:bg-orange-500 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200">
+                    <i class="bi bi-shield-check mr-2"></i>Verify
+                </button>
+            </div>
+        </div>
+
+        <div id="success" class="bg-gray-800 rounded-xl p-6 shadow-xl hidden text-center">
+            <div class="text-green-400 mb-4">
+                <i class="bi bi-check-circle text-6xl"></i>
+            </div>
+            <h2 class="text-2xl font-semibold text-white mb-2">Authentication Successful!</h2>
+            <p class="text-gray-300 mb-6">You have been successfully authenticated with Scratch.</p>
+            <p class="text-gray-400 text-sm">This window will close automatically...</p>
+        </div>
+    </div>
+
+    <script>
+        let currentCode = '';
+        let currentUsername = '';
+        
+        function showStep(stepNumber) {
+            document.querySelectorAll('[id^="step"]').forEach(el => {
+                if (el.id.includes('indicator') || el.id.includes('Error')) return;
+                el.classList.add('hidden');
+            });
+            document.getElementById(`step${stepNumber}`).classList.remove('hidden');
+            
+            for (let i = 1; i <= 3; i++) {
+                const indicator = document.getElementById(`step${i}-indicator`);
+                const connector = document.getElementById(`connector${i}`);
+                
+                if (i < stepNumber) {
+                    indicator.className = 'step-indicator w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold';
+                    indicator.innerHTML = '<i class="bi bi-check"></i>';
+                    if (connector) connector.className = 'w-8 h-1 bg-green-500';
+                } else if (i === stepNumber) {
+                    indicator.className = 'step-indicator step-active w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center text-white text-sm font-bold';
+                    indicator.textContent = i;
+                } else {
+                    indicator.className = 'step-indicator w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-white text-sm font-bold';
+                    indicator.textContent = i;
+                    if (connector) connector.className = 'w-8 h-1 bg-gray-600';
+                }
+            }
+        }
+
+        document.getElementById('getCodeBtn').addEventListener('click', async () => {
+            const username = document.getElementById('usernameInput').value.trim();
+            const errorDiv = document.getElementById('step1Error');
+            const errorText = document.getElementById('step1ErrorText');
+            
+            if (!username) {
+                errorText.textContent = 'Please enter your Scratch username.';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            errorDiv.classList.add('hidden');
+            currentUsername = username;
+            
+            try {
+                const response = await fetch('/auth/scratch/generate', { method: 'POST' });
+                const data = await response.json();
+                
+                if (data.code) {
+                    currentCode = data.code;
+                    document.getElementById('verificationCode').textContent = data.code;
+                    document.getElementById('displayCode').textContent = data.code;
+                    document.getElementById('scratchProfileLink').href = `https://scratch.mit.edu/users/${username}/`;
+                    showStep(2);
+                }
+            } catch (error) {
+                errorText.textContent = 'Failed to generate code. Please try again.';
+                errorDiv.classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('copyBtn').addEventListener('click', () => {
+            navigator.clipboard.writeText(currentCode);
+            const btn = document.getElementById('copyBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="bi bi-check"></i> Copied!';
+            btn.className = 'bg-green-600 text-white px-3 py-1 rounded text-sm transition-colors';
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.className = 'bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 rounded text-sm transition-colors';
+            }, 2000);
+        });
+
+        document.getElementById('nextToCommentBtn').addEventListener('click', () => showStep(3));
+
+        document.getElementById('verifyBtn').addEventListener('click', async () => {
+            const errorDiv = document.getElementById('step3Error');
+            const errorText = document.getElementById('step3ErrorText');
+            
+            errorDiv.classList.add('hidden');
+            
+            try {
+                const response = await fetch('/auth/scratch/verify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code: currentCode, username: currentUsername })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success && data.token) {
+                    document.getElementById('step3').classList.add('hidden');
+                    document.getElementById('success').classList.remove('hidden');
+                    
+                    for (let i = 1; i <= 3; i++) {
+                        const indicator = document.getElementById(`step${i}-indicator`);
+                        const connector = document.getElementById(`connector${i}`);
+                        indicator.className = 'step-indicator w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold';
+                        indicator.innerHTML = '<i class="bi bi-check"></i>';
+                        if (connector) connector.className = 'w-8 h-1 bg-green-500';
+                    }
+                    
+                    if (window.opener) {
+                        window.opener.postMessage({type: 'AUTH_SUCCESS', token: data.token}, '*');
+                        setTimeout(() => window.close(), 2000);
+                    }
+                } else {
+                    errorText.textContent = data.error || 'Verification failed. Make sure you posted the code in your profile comments.';
+                    errorDiv.classList.remove('hidden');
+                }
+            } catch (error) {
+                errorText.textContent = 'Network error. Please check your connection and try again.';
+                errorDiv.classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('usernameInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('getCodeBtn').click();
+            }
+        });
+    </script>
+</body>
+</html>

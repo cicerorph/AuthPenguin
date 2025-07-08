@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - AuthPenguin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        body { background: linear-gradient(135deg, #1f2937 0%, #111827 100%); }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-900">
+    <nav class="bg-gray-800/80 backdrop-blur-sm border-b border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold text-white">🐧 AuthPenguin</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/" class="text-gray-300 hover:text-white transition-colors">Home</a>
+                    <a href="/terms" class="text-gray-300 hover:text-white transition-colors">Terms</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="bg-gray-800 rounded-xl p-8 shadow-xl">
+            <h1 class="text-4xl font-bold text-white mb-8">Privacy Policy</h1>
+            <div class="text-gray-300 space-y-6">
+                <p class="text-sm text-gray-400">Last updated: May 2025</p>
+                
+                <section>
+                    <h2 class="text-2xl font-semibold text-white mb-4">1. Information We Collect</h2>
+                    <p>When you use AuthPenguin, we may collect the following information:</p>
+                    <ul class="list-disc pl-6 space-y-2 mt-3">
+                        <li><strong>OAuth Provider Data:</strong> Username, email, profile picture, and other public profile information from your chosen OAuth provider</li>
+                        <li><strong>Authentication Tokens:</strong> Temporary tokens used to maintain your authentication session</li>
+                        <li><strong>Usage Data:</strong> Information about how you interact with our service</li>
+                        <li><strong>Scratch Verification:</strong> For Scratch authentication, we check public comments on your profile</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-semibold text-white mb-4">2. How We Use Your Information</h2>
+                    <p>We use the collected information for the following purposes:</p>
+                    <ul class="list-disc pl-6 space-y-2 mt-3">
+                        <li>To provide OAuth authentication services</li>
+                        <li>To verify your identity with third-party providers</li>
+                        <li>To maintain your authentication session</li>
+                        <li>To improve our service and user experience</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-semibold text-white mb-4">3. Data Storage and Security</h2>
+                    <p>We implement appropriate security measures to protect your information:</p>
+                    <ul class="list-disc pl-6 space-y-2 mt-3">
+                        <li>Authentication tokens are stored securely using Redis</li>
+                        <li>Tokens expire automatically after 24 hours</li>
+                        <li>We use secure HTTPS connections for all communications</li>
+                        <li>We do not store sensitive OAuth credentials</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-semibold text-white mb-4">4. Third-Party Services</h2>
+                    <p>AuthPenguin integrates with the following third-party OAuth providers:</p>
+                    <ul class="list-disc pl-6 space-y-2 mt-3">
+                        <li><strong>Discord:</strong> Subject to Discord's Privacy Policy</li>
+                        <li><strong>Google:</strong> Subject to Google's Privacy Policy</li>
+                        <li><strong>GitHub:</strong> Subject to GitHub's Privacy Policy</li>
+                        <li><strong>Scratch:</strong> We access public profile information and comments</li>
+                    </ul>
+                    <p class="mt-3">Please review the privacy policies of these services for information about their data practices.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-semibold text-white mb-4">5. Data Retention</h2>
+                    <p>We retain your data for the following periods:</p>
+                    <ul class="list-disc pl-6 space-y-2 mt-3">
+                        <li>Authentication tokens: 24 hours or until logout</li>
+                        <li>Scratch verification codes: 10 minutes</li>
+                        <li>Profile information: Only during active authentication sessions</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-semibold text-white mb-4">6. Your Rights</h2>
+                    <p>You have the following rights regarding your data:</p>
+                    <ul class="list-disc pl-6 space-y-2 mt-3">
+                        <li>The right to access your data</li>
+                        <li>The right to delete your data (by logging out)</li>
+                        <li>The right to revoke OAuth permissions through the respective providers</li>
+                        <li>The right to contact us with privacy concerns</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-semibold text-white mb-4">7. Children's Privacy</h2>
+                    <p>AuthPenguin does not knowingly collect personal information from children under 13. If you believe we have collected information from a child under 13, please contact us immediately.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-semibold text-white mb-4">8. Changes to This Policy</h2>
+                    <p>We may update this privacy policy from time to time. We will notify users of any material changes by posting the updated policy on our website.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-semibold text-white mb-4">9. Contact Us</h2>
+                    <p>If you have any questions about this Privacy Policy, please contact us through our GitHub repository or other available channels.</p>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-gray-900 border-t border-gray-700 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-gray-400">&copy; 2025 AuthPenguin. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

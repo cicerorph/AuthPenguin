@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blocked - AuthPenguin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        body { background: linear-gradient(135deg, #1f2937 0%, #111827 100%); }
+        .blocked-penguin {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .error-glow {
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-6 bg-gray-900">
+    <div class="max-w-md w-full text-center">
+        <div class="blocked-penguin mb- flex justify-center">
+            <img src="images/blocked.png" alt="Blocked Penguin" class="w-48 h-48 object-contain">
+        </div>
+
+        <div class="bg-gray-800 rounded-xl p-8 shadow-xl border border-red-500/30">
+            <div class="text-red-400 mb-4">
+                <i class="bi bi-shield-x text-4xl"></i>
+            </div>
+            
+            <h1 class="text-3xl font-bold text-white mb-4">Access Blocked</h1>
+            
+            <div class="text-gray-300 mb-6">
+                <p class="mb-4" id="blockMessage">This project has been blocked from using the AuthPenguin system.</p>
+
+                <div class="bg-gray-700 rounded-lg p-4 mb-4">
+                    <div class="text-sm text-gray-400 mb-2">Reason:</div>
+                    <div class="text-red-300" id="reason">Loading...</div>
+                </div>
+                
+                <div class="bg-gray-700 rounded-lg p-4">
+                    <div class="text-sm text-gray-400 mb-2">Blocked:</div>
+                    <div class="text-gray-300" id="blockedAt">Loading...</div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 pt-6">
+                <p class="text-gray-400 text-sm mb-4">
+                    If you believe this is a mistake, please contact the <span class="text-blue-300">@mubilop</span>.
+                </p>
+                
+                <button onclick="window.close()" class="bg-gray-600 hover:bg-gray-500 text-white px-6 py-2 rounded-lg transition-colors">
+                    close window
+                </button>
+            </div>
+        </div>
+        
+        <div class="mt-8 text-center">
+            <p class="text-gray-500 text-sm">
+                AuthPenguin Security System
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const projectId = urlParams.get('projectId') || 'Unknown';
+        const reason = urlParams.get('reason') || 'No reason provided';
+        const blockedAt = urlParams.get('blockedAt') || 'Unknown';
+        const type = urlParams.get('type') || 'project';
+        
+        document.getElementById('projectId').textContent = projectId;
+        document.getElementById('reason').textContent = reason;
+        document.getElementById('blockedAt').textContent = new Date(blockedAt).toLocaleString();
+        
+        if (type === 'origin') {
+            document.title = 'Website Blocked - AuthPenguin';
+            document.getElementById('blockMessage').textContent = 'This website has been blocked from using the AuthPenguin OAuth system.';
+            document.getElementById('idLabel').textContent = 'Website:';
+        } else if (type === 'shared') {
+            document.title = 'Shared Project Blocked - AuthPenguin';
+            document.getElementById('blockMessage').textContent = 'This shared project has been blocked from using the AuthPenguin OAuth system.';
+            document.getElementById('idLabel').textContent = 'Shared Project ID:';
+        }
+        
+        if (window.opener) {
+            window.opener.postMessage({
+                type: 'AUTH_BLOCKED',
+                projectId: projectId,
+                reason: reason,
+                blockedAt: blockedAt,
+                blockType: type
+            }, '*');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - AuthPenguin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        body { background: linear-gradient(135deg, #1f2937 0%, #111827 100%); }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-900">
+    <nav class="bg-gray-800/80 backdrop-blur-sm border-b border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-white">🐧 AuthPenguin Admin</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-gray-300" id="statusIndicator">Not Connected</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Admin Key Input -->
+        <div class="bg-gray-800 rounded-xl p-6 mb-8">
+            <h2 class="text-xl font-semibold text-white mb-4">Admin Authentication</h2>
+            <div class="flex space-x-4">
+                <input type="password" id="adminKey" placeholder="Enter admin key" 
+                       class="flex-1 bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button onclick="authenticateAdmin()" class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-lg transition-colors">
+                    Connect
+                </button>
+            </div>
+        </div>
+
+        <!-- Block Project Section -->
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-gray-800 rounded-xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-4">Block Project</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-gray-300 text-sm font-medium mb-2">Project ID</label>
+                        <input type="text" id="blockProjectId" placeholder="Enter project ID" 
+                               class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 text-sm font-medium mb-2">Type</label>
+                        <select id="blockType" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="project">Regular Project</option>
+                            <option value="shared">Shared Project</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 text-sm font-medium mb-2">Reason</label>
+                        <textarea id="blockReason" placeholder="Enter reason for blocking" 
+                                  class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3"></textarea>
+                    </div>
+                    <button onclick="blockProject()" class="w-full bg-red-600 hover:bg-red-500 text-white font-semibold py-2 px-4 rounded-lg transition-colors">
+                        Block Project
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-gray-800 rounded-xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-4">Unblock Project</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-gray-300 text-sm font-medium mb-2">Project ID</label>
+                        <input type="text" id="unblockProjectId" placeholder="Enter project ID" 
+                               class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 text-sm font-medium mb-2">Type</label>
+                        <select id="unblockType" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="project">Regular Project</option>
+                            <option value="shared">Shared Project</option>
+                        </select>
+                    </div>
+                    <button onclick="unblockProject()" class="w-full bg-green-600 hover:bg-green-500 text-white font-semibold py-2 px-4 rounded-lg transition-colors">
+                        Unblock Project
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-gray-800 rounded-xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-4">Block Origin/Website</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-gray-300 text-sm font-medium mb-2">Website/Origin</label>
+                        <input type="text" id="blockOrigin" placeholder="example.com" 
+                               class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 text-sm font-medium mb-2">Reason</label>
+                        <textarea id="blockOriginReason" placeholder="Enter reason for blocking" 
+                                  class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3"></textarea>
+                    </div>
+                    <button onclick="blockOrigin()" class="w-full bg-red-600 hover:bg-red-500 text-white font-semibold py-2 px-4 rounded-lg transition-colors">
+                        Block Origin
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-gray-800 rounded-xl p-6">
+                <h2 class="text-xl font-semibold text-white mb-4">Unblock Origin/Website</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-gray-300 text-sm font-medium mb-2">Website/Origin</label>
+                        <input type="text" id="unblockOrigin" placeholder="example.com" 
+                               class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <button onclick="unblockOrigin()" class="w-full bg-green-600 hover:bg-green-500 text-white font-semibold py-2 px-4 rounded-lg transition-colors">
+                        Unblock Origin
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blocked Projects List -->
+        <div class="bg-gray-800 rounded-xl p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold text-white">Blocked Items</h2>
+                <button onclick="loadBlockedProjects()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg transition-colors">
+                    <i class="bi bi-arrow-clockwise mr-2"></i>Refresh
+                </button>
+            </div>
+            <div id="blockedProjectsList" class="space-y-2">
+                <p class="text-gray-400">Load blocked items to see them here...</p>
+            </div>
+        </div>
+
+        <!-- Messages -->
+        <div id="messages" class="fixed bottom-4 right-4 space-y-2"></div>
+    </div>
+
+    <script>
+        let adminKey = '';
+        let isAuthenticated = false;
+
+        function showMessage(message, type = 'info') {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `p-4 rounded-lg text-white ${
+                type === 'error' ? 'bg-red-600' : 
+                type === 'success' ? 'bg-green-600' : 
+                'bg-blue-600'
+            }`;
+            messageDiv.textContent = message;
+            
+            document.getElementById('messages').appendChild(messageDiv);
+            
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 5000);
+        }
+
+        function updateStatus(connected) {
+            const indicator = document.getElementById('statusIndicator');
+            if (connected) {
+                indicator.textContent = 'Connected';
+                indicator.className = 'text-green-400';
+            } else {
+                indicator.textContent = 'Not Connected';
+                indicator.className = 'text-red-400';
+            }
+        }
+
+        function authenticateAdmin() {
+            const key = document.getElementById('adminKey').value;
+            if (!key) {
+                showMessage('Please enter admin key', 'error');
+                return;
+            }
+            
+            adminKey = key;
+            isAuthenticated = true;
+            updateStatus(true);
+            showMessage('Admin authenticated successfully', 'success');
+            loadBlockedProjects();
+        }
+
+        async function blockProject() {
+            if (!isAuthenticated) {
+                showMessage('Please authenticate first', 'error');
+                return;
+            }
+
+            const projectId = document.getElementById('blockProjectId').value;
+            const type = document.getElementById('blockType').value;
+            const reason = document.getElementById('blockReason').value;
+
+            if (!projectId) {
+                showMessage('Please enter project ID', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('/admin/block', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Admin-Key': adminKey
+                    },
+                    body: JSON.stringify({ projectId, type, reason })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    showMessage(data.message, 'success');
+                    document.getElementById('blockProjectId').value = '';
+                    document.getElementById('blockReason').value = '';
+                    loadBlockedProjects();
+                } else {
+                    showMessage(data.error, 'error');
+                }
+            } catch (error) {
+                showMessage('Error blocking project', 'error');
+            }
+        }
+
+        async function unblockProject() {
+            if (!isAuthenticated) {
+                showMessage('Please authenticate first', 'error');
+                return;
+            }
+
+            const projectId = document.getElementById('unblockProjectId').value;
+            const type = document.getElementById('unblockType').value;
+
+            if (!projectId) {
+                showMessage('Please enter project ID', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('/admin/unblock', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Admin-Key': adminKey
+                    },
+                    body: JSON.stringify({ projectId, type })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    showMessage(data.message, 'success');
+                    document.getElementById('unblockProjectId').value = '';
+                    loadBlockedProjects();
+                } else {
+                    showMessage(data.error, 'error');
+                }
+            } catch (error) {
+                showMessage('Error unblocking project', 'error');
+            }
+        }
+
+        async function blockOrigin() {
+            if (!isAuthenticated) {
+                showMessage('Please authenticate first', 'error');
+                return;
+            }
+
+            const origin = document.getElementById('blockOrigin').value;
+            const reason = document.getElementById('blockOriginReason').value;
+
+            if (!origin) {
+                showMessage('Please enter origin/website', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('/admin/block-origin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Admin-Key': adminKey
+                    },
+                    body: JSON.stringify({ origin, reason })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    showMessage(data.message, 'success');
+                    document.getElementById('blockOrigin').value = '';
+                    document.getElementById('blockOriginReason').value = '';
+                    loadBlockedProjects();
+                } else {
+                    showMessage(data.error, 'error');
+                }
+            } catch (error) {
+                showMessage('Error blocking origin', 'error');
+            }
+        }
+
+        async function unblockOrigin() {
+            if (!isAuthenticated) {
+                showMessage('Please authenticate first', 'error');
+                return;
+            }
+
+            const origin = document.getElementById('unblockOrigin').value;
+
+            if (!origin) {
+                showMessage('Please enter origin/website', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('/admin/unblock-origin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Admin-Key': adminKey
+                    },
+                    body: JSON.stringify({ origin })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    showMessage(data.message, 'success');
+                    document.getElementById('unblockOrigin').value = '';
+                    loadBlockedProjects();
+                } else {
+                    showMessage(data.error, 'error');
+                }
+            } catch (error) {
+                showMessage('Error unblocking origin', 'error');
+            }
+        }
+
+        async function loadBlockedProjects() {
+            if (!isAuthenticated) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/admin/blocked', {
+                    headers: {
+                        'X-Admin-Key': adminKey
+                    }
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    const list = document.getElementById('blockedProjectsList');
+                    if (data.blocked.length === 0) {
+                        list.innerHTML = '<p class="text-gray-400">No blocked items</p>';
+                    } else {
+                        list.innerHTML = data.blocked.map(item => {
+                            const icon = item.type === 'origin' ? '🌐' : item.type === 'shared' ? '🔗' : '📁';
+                            const typeLabel = item.type === 'origin' ? 'Origin' : item.type === 'shared' ? 'Shared Project' : 'Project';
+                            return `
+                                <div class="bg-gray-700 rounded-lg p-4 flex justify-between items-center">
+                                    <div>
+                                        <div class="text-white font-medium">${icon} ${item.id}</div>
+                                        <div class="text-gray-400 text-sm">${typeLabel} - ${item.reason}</div>
+                                        <div class="text-gray-500 text-xs">Blocked: ${new Date(item.timestamp).toLocaleString()}</div>
+                                    </div>
+                                    <button onclick="quickUnblock('${item.id}', '${item.type}')" 
+                                            class="bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded text-sm transition-colors">
+                                        Unblock
+                                    </button>
+                                </div>
+                            `;
+                        }).join('');
+                    }
+                } else {
+                    showMessage(data.error, 'error');
+                }
+            } catch (error) {
+                showMessage('Error loading blocked projects', 'error');
+            }
+        }
+
+        async function quickUnblock(projectId, type) {
+            const typeLabel = type === 'origin' ? 'origin' : type === 'shared' ? 'shared project' : 'project';
+            if (!confirm(`Are you sure you want to unblock ${typeLabel}: ${projectId}?`)) {
+                return;
+            }
+
+            try {
+                const endpoint = type === 'origin' ? '/admin/unblock-origin' : '/admin/unblock';
+                const body = type === 'origin' ? { origin: projectId } : { projectId, type };
+                
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Admin-Key': adminKey
+                    },
+                    body: JSON.stringify(body)
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    showMessage(data.message, 'success');
+                    loadBlockedProjects();
+                } else {
+                    showMessage(data.error, 'error');
+                }
+            } catch (error) {
+                showMessage('Error unblocking item', 'error');
+            }
+        }
+
+        // Handle Enter key in admin key input
+        document.getElementById('adminKey').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                authenticateAdmin();
+            }
+        });
+    </script>
+</body>
+</html>
