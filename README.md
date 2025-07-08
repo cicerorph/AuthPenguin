@@ -55,28 +55,24 @@ server/
 - Configuration files for easy maintenance
 - Proper error handling and logging
 
+
+Here's the updated markdown with instructions to copy `.env.template` to `.env` and modify it:
+
+
+
+---
+
+
+
 ## Environment Variables
 
-Add these to your `.env` file:
+First, copy the `.env.template` file to `.env`:
 
-```env
-# Existing variables...
-DISCORD_CLIENT_ID=your_discord_client_id
-DISCORD_CLIENT_SECRET=your_discord_client_secret
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-GITHUB_CLIENT_ID=your_github_client_id
-GITHUB_CLIENT_SECRET=your_github_client_secret
-SOUNDCLOUD_CLIENT_ID=your_soundcloud_client_id
-SOUNDCLOUD_CLIENT_SECRET=your_soundcloud_client_secret
-REDIS_URL=redis://localhost:6379
-BASE_URL=http://localhost:3000
-SESSION_SECRET=your_session_secret
-
-# New variables
-ADMIN_KEY=your_secure_admin_key
-NODE_ENV=development
+```sh
+cp .env.template .env
 ```
+
+Then, open the `.env` file and update the values based on what they do (showed on the comments
 
 ## API Endpoints
 
